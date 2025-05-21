@@ -37,11 +37,29 @@ class ImageClassifier(private val context: Context) {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
     }
 
-    fun classifyImage(imageFile: File): String {
+    sealed class ClassificationResult {
+        data class Success(val category: String) : ClassificationResult()
+        data class Error(val message: String) : ClassificationResult()
+    }
+
+    fun classifyImage(imageFile: File): ClassificationResult {
         try {
+            if (!imageFile.exists()) {
+                return ClassificationResult.Error("File does not exist")
+            }
+
             // Load and preprocess the image
-            val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
+            val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath) ?: run {
+                return ClassificationResult.Error("Failed to decode image")
+            }
+
+            if (bitmap.width <= 0 || bitmap.height <= 0) {
+                bitmap.recycle()
+                return ClassificationResult.Error("Invalid image dimensions")
+            }
+
             val resizedBitmap = Bitmap.createScaledBitmap(bitmap, imageSize, imageSize, true)
+            bitmap.recycle() // Free up the original bitmap memory
             
             // Convert bitmap to ByteBuffer
             val inputBuffer = ByteBuffer.allocateDirect(imageSize * imageSize * numChannels * 4)
@@ -83,11 +101,17 @@ class ImageClassifier(private val context: Context) {
                     maxValue = outputs[i]
                 }
             }
-            
-            return categories[maxIndex]
+
+            // Check confidence threshold
+            return if (maxValue > 0.3f) { // Minimum 30% confidence
+                ClassificationResult.Success(categories[maxIndex])
+            } else {
+                ClassificationResult.Error("Low confidence classification")
+            }
         } catch (e: Exception) {
             e.printStackTrace()
-            return "Other" // Default category in case of error
+            android.util.Log.e("ImageClassifier", "Classification error", e)
+            return ClassificationResult.Error("Classification failed: ${e.message}")
         }
     }
 
