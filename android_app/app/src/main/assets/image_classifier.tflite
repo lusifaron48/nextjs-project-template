@@ -1,0 +1,3 @@
+// This is a placeholder for the TensorFlow Lite model file.
+// In a real application, you would need to train and convert a proper ML model
+// The actual .tflite file is a binary file that would be generated from your trained model
