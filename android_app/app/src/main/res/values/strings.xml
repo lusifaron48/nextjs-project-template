@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Photo Organizer</string>
+    
+    <!-- Main Activity -->
+    <string name="scan_photos">Scan Photos</string>
+    <string name="no_images_found">No images found</string>
+    <string name="scanning_in_progress">Scanning photos…</string>
+    <string name="scan_complete">Scan complete</string>
+    <string name="error_scanning">Error scanning photos</string>
+    
+    <!-- Review Activity -->
+    <string name="review_image">Review Image</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_category">Select Category</string>
+    <string name="image_moved">Image moved to %1$s</string>
+    <string name="error_moving_image">Error moving image</string>
+    
+    <!-- Categories -->
+    <string name="category_people">People</string>
+    <string name="category_nature">Nature</string>
+    <string name="category_documents">Documents</string>
+    <string name="category_screenshots">Screenshots</string>
+    <string name="category_other">Other</string>
+    
+    <!-- Permissions -->
+    <string name="permission_required">Storage permission is required</string>
+    <string name="permission_denied">Cannot proceed without storage permission</string>
+    
+    <!-- Errors -->
+    <string name="error_loading_image">Error loading image</string>
+    <string name="error_creating_directory">Error creating directory</string>
+    <string name="error_generic">An error occurred</string>
+</resources>
